@@ -19,7 +19,7 @@ S: FONCTION mc_program idf LISTE_DEC LISTE_INST mc_end
 LISTE_DEC : LISTE_DEC DEC | DEC
 DEC : TYPE LISTE_VAR pvg 
 TYPE: mc_integer {strcpy(save,$1);}| mc_real {strcpy(save,$1);} | mc_logical {strcpy(save,$1);} | mc_character {strcpy(save,$1);}
-LISTE_VAR : VAR| VAR vg LISTE_VAR 
+LISTE_VAR : VAR {insereType($1,save);}| VAR vg LISTE_VAR {insereType($1,save);}
 VAR : idf  | DEC_DIMENSION | DEC_CHAR
 DEC_DIMENSION : idf mc_dimension pouv TAILLE pfer 
 DEC_CHAR : idf prdt integer

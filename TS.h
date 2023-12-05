@@ -152,3 +152,15 @@ void afficherSeparateurs() {
          }}
          
  }
+ int doubleDeclaration(char idf[]){
+     TS *temp = tete1;
+     while (temp != NULL && strcmp(temp->info.nomEntite,idf)!=0) {
+        temp = temp->suivant;}
+    if(temp !=NULL){
+            if(strcmp(temp->info.type, "/") == 0){
+             strcpy(temp->info.type,type);
+             return 1; // retourne 1 si la variable n'a pas été declaré 
+         }
+    }
+    return -1; // retourne 1 si la var a ete declare
+ }
