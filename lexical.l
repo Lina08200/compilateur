@@ -44,7 +44,7 @@ NE 				{inserer(yytext,"/","/","/",0, 2); nb_car = nb_car + strlen(yytext); retu
 LE 				{inserer(yytext,"/","/","/",0, 2); nb_car = nb_car + strlen(yytext); return le;}
 LT 				{inserer(yytext,"/","/","/",0, 2); nb_car = nb_car + strlen(yytext); return lt;}
 {Logical} 		{nb_car = nb_car + strlen(yytext); return logical;}
-{Real} 			{nb_car = nb_car + strlen(yytext);  yylval.reel=strdup(yytext); inserer(yytext,"cst","reel","/",0, 0); return real;}
+{Real} 			{nb_car = nb_car + strlen(yytext);  yylval.reel=atof(yytext); inserer(yytext,"cst","reel","/",0, 0); return real;}
 {IDF} 			{nb_car = nb_car + strlen(yytext);
 					if(strlen(yytext)>10) printf("ligne %d, character  %d : erreur lexicale %s: IDF trop long\n", nb_ligne, nb_car, yytext);
 					else { yylval.str=strdup(yytext); inserer(yytext,"idf","/","/",0, 0); return idf;}}
@@ -54,7 +54,7 @@ LT 				{inserer(yytext,"/","/","/",0, 2); nb_car = nb_car + strlen(yytext); retu
 					else nb_car++;}}
 {Integer} 		{nb_car = nb_car + strlen(yytext);
 					int entier = atoi(yytext);
-					if (entier >= -32768 && entier<= 32767){ yylval.entier=strdup(yytext); inserer(yytext,"cst","entier","/",0, 0); return integer;}
+					if (entier >= -32768 && entier<= 32767){ yylval.entier=entier; inserer(yytext,"cst","entier","/",0, 0); return integer;}
 					else printf("erreur lexicale %s a la ligne  %d \n",yytext,nb_ligne); }
 {Character}		{nb_car = nb_car + strlen(yytext); return character;}
 "."				{nb_car = nb_car + strlen(yytext); inserer(yytext,"/","/","/",0, 2); return point;}
