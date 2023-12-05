@@ -8,7 +8,9 @@ char save[20];
      int entier;
      float reel;
 }
-%token <str>mc_program <str>mc_end <str>mc_routine <str>mc_endr <str>mc_integer <str>mc_real <str>mc_logical <str>mc_character mc_read mc_write mc_if mc_then mc_else mc_endif mc_dowhile mc_enddo mc_call mc_equivalence mc_dimension or and gt ge eq ne le lt logical <reel>real <str>idf <entier>integer character aff pvg vg add sstr prdt division pouv pfer guill point
+%token <reel>real
+%token <entier>integer
+%token <str>mc_program <str>mc_end <str>mc_routine <str>mc_endr <str>mc_integer <str>mc_real <str>mc_logical <str>mc_character mc_read mc_write mc_if mc_then mc_else mc_endif mc_dowhile mc_enddo mc_call mc_equivalence mc_dimension or and gt ge eq ne le lt logical <str>idf character aff pvg vg add sstr prdt division pouv pfer guill point
 %start S
 
 %%
@@ -19,7 +21,7 @@ S: FONCTION mc_program idf LISTE_DEC LISTE_INST mc_end
 LISTE_DEC : LISTE_DEC DEC | DEC
 DEC : TYPE LISTE_VAR pvg 
 TYPE: mc_integer {strcpy(save,$1);}| mc_real {strcpy(save,$1);} | mc_logical {strcpy(save,$1);} | mc_character {strcpy(save,$1);}
-LISTE_VAR : VAR {insereType($1,save);}| VAR vg LISTE_VAR {insereType($1,save);}
+LISTE_VAR : VAR| VAR vg LISTE_VAR 
 VAR : idf  | DEC_DIMENSION | DEC_CHAR
 DEC_DIMENSION : idf mc_dimension pouv TAILLE pfer 
 DEC_CHAR : idf prdt integer
