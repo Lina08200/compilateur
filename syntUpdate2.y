@@ -22,7 +22,7 @@ LISTE_DEC : LISTE_DEC DEC | DEC
 DEC : TYPE LISTE_VAR pvg 
 TYPE: mc_integer {strcpy(save,$1);}| mc_real {strcpy(save,$1);} | mc_logical {strcpy(save,$1);} | mc_character {strcpy(save,$1);}
 LISTE_VAR : VAR| VAR vg LISTE_VAR 
-VAR : idf  | DEC_DIMENSION | DEC_CHAR
+VAR : idf | DEC_DIMENSION | DEC_CHAR
 DEC_DIMENSION : idf mc_dimension pouv TAILLE pfer 
 DEC_CHAR : idf prdt integer
 TAILLE : integer | integer vg integer 
