@@ -1,7 +1,8 @@
 %{
 #include"syntUpdate2.tab.h" 
-int nb_ligne = 1;
-int nb_car = 1;
+extern nb_ligne;
+extern nb_car;
+
 int i;
 #include "TS.h"
 extern YYSTYPE yylval;
@@ -43,20 +44,20 @@ EQ 				{inserer(yytext,"/","/","/",0, 2); nb_car = nb_car + strlen(yytext); retu
 NE 				{inserer(yytext,"/","/","/",0, 2); nb_car = nb_car + strlen(yytext); return ne;}
 LE 				{inserer(yytext,"/","/","/",0, 2); nb_car = nb_car + strlen(yytext); return le;}
 LT 				{inserer(yytext,"/","/","/",0, 2); nb_car = nb_car + strlen(yytext); return lt;}
-{Logical} 		{nb_car = nb_car + strlen(yytext); return logical;}
-{Real} 			{nb_car = nb_car + strlen(yytext);  yylval.reel=atof(yytext); inserer(yytext,"cst","reel","/",0, 0); return real;}
+{Logical} 		{inserer(yytext,"cst","LOGICAL","/",0, 0);nb_car = nb_car + strlen(yytext); return logical;}
+{Real} 			{nb_car = nb_car + strlen(yytext);  yylval.reel=atof(yytext); inserer(yytext,"cst","REAL","/",0, 0); return real;}
 {IDF} 			{nb_car = nb_car + strlen(yytext);
 					if(strlen(yytext)>10) printf("ligne %d, character  %d : erreur lexicale %s: IDF trop long\n", nb_ligne, nb_car, yytext);
-					else { yylval.str=strdup(yytext); inserer(yytext,"idf","/","/",0, 0); return idf;}}
+					else { yylval.str=strdup(yytext); return idf;}}
 {commentaire} 	{ int len=strlen(yytext);
 					for(i=0;i<len;i++){
 					if(yytext[i]=='\n'){nb_ligne++; nb_car=1;}
 					else nb_car++;}}
 {Integer} 		{nb_car = nb_car + strlen(yytext);
 					int entier = atoi(yytext);
-					if (entier >= -32768 && entier<= 32767){ yylval.entier=entier; inserer(yytext,"cst","entier","/",0, 0); return integer;}
+					if (entier >= -32768 && entier<= 32767){ yylval.integer=entier; inserer(yytext,"cst","INTEGER","/",0, 0); return integer;}
 					else printf("erreur lexicale %s a la ligne  %d \n",yytext,nb_ligne); }
-{Character}		{nb_car = nb_car + strlen(yytext); return character;}
+{Character}		{nb_car = nb_car + strlen(yytext); yylval.str=strdup(yytext); return character;}
 "."				{nb_car = nb_car + strlen(yytext); inserer(yytext,"/","/","/",0, 2); return point;}
 "=" 			{nb_car = nb_car + strlen(yytext); inserer(yytext,"/","/","/",0, 2); return aff;}
 ";" 			{nb_car = nb_car + strlen(yytext); inserer(yytext,"/","/","/",0, 2); return pvg;}

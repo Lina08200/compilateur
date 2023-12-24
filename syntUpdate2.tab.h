@@ -39,37 +39,37 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     mc_program = 258,
-     mc_end = 259,
-     mc_routine = 260,
-     mc_endr = 261,
-     mc_integer = 262,
-     mc_real = 263,
-     mc_logical = 264,
-     mc_character = 265,
-     mc_read = 266,
-     mc_write = 267,
-     mc_if = 268,
-     mc_then = 269,
-     mc_else = 270,
-     mc_endif = 271,
-     mc_dowhile = 272,
-     mc_enddo = 273,
-     mc_call = 274,
-     mc_equivalence = 275,
-     mc_dimension = 276,
-     or = 277,
-     and = 278,
-     gt = 279,
-     ge = 280,
-     eq = 281,
-     ne = 282,
-     le = 283,
-     lt = 284,
-     logical = 285,
-     real = 286,
-     idf = 287,
-     integer = 288,
+     real = 258,
+     integer = 259,
+     mc_program = 260,
+     mc_end = 261,
+     mc_routine = 262,
+     mc_endr = 263,
+     mc_integer = 264,
+     mc_real = 265,
+     mc_logical = 266,
+     mc_character = 267,
+     mc_read = 268,
+     mc_write = 269,
+     mc_if = 270,
+     mc_then = 271,
+     mc_else = 272,
+     mc_endif = 273,
+     mc_dowhile = 274,
+     mc_enddo = 275,
+     mc_call = 276,
+     mc_equivalence = 277,
+     mc_dimension = 278,
+     or = 279,
+     and = 280,
+     gt = 281,
+     ge = 282,
+     eq = 283,
+     ne = 284,
+     le = 285,
+     lt = 286,
+     logical = 287,
+     idf = 288,
      character = 289,
      aff = 290,
      pvg = 291,
@@ -88,7 +88,21 @@
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE
+{
+
+/* Line 1676 of yacc.c  */
+#line 11 "syntUpdate2.y"
+
+    float reel;
+	int integer;
+	char* str;
+
+
+
+/* Line 1676 of yacc.c  */
+#line 105 "syntUpdate2.tab.h"
+} YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
