@@ -51,20 +51,20 @@ int Rechercher(char nom[], int i) {
         case 0:
             while (p != NULL) {
                 if (strcmp(nom, p->info.nomEntite) == 0){
-                   return -1;
-                }  // Retourne -1 si l'entité existe
+                   return 0;
+                }  // Retourne 0 si l'entité existe
                 p = p->suivant;
             }
             break;
         case 1:
             while (q != NULL) {
-                if (strcmp(nom, q->info.Motcle) == 0) return -1; // Retourne -1 si le mot clé existe
+                if (strcmp(nom, q->info.Motcle) == 0) return 0; // Retourne 0 si le mot clé existe
                 q = q->suivant;
             }
             break;
         case 2:
             while (k != NULL) {
-                if (strcmp(nom, k->info.Sep) == 0) return -1; // Retourne -1 si le séparateur existe
+                if (strcmp(nom, k->info.Sep) == 0) return 0; // Retourne 0 si le séparateur existe
                 k = k->suivant;
             }
             break;
@@ -77,7 +77,7 @@ void inserer(char entite[], char nature[], char type[], char typeVar[], float va
     int y = Rechercher(entite, i);
     switch (i) {
         case 0:
-            if (y > 0) {
+             if (y > 0 || doubleDeclaration(entite,typeVar) ) {
                 TS *nouveau = (TS *)malloc(sizeof(TS));
                 strcpy(nouveau->info.nomEntite, entite);
                 strcpy(nouveau->info.nature, nature);
@@ -109,24 +109,22 @@ void inserer(char entite[], char nature[], char type[], char typeVar[], float va
 // Afficher les entités
 void afficherEntites() {
     TS *temp = tete1;
-    printf("\n*********************************************Table des IDF et cst*********************************************:\n");
-    printf("\t |%10s |%10s |%10s |%10s |%10s |%10s |\n", "Nom", "Nature", "Type", "TypeVar", "Valeur", "Taille");
-    printf("----------------------------------------------------------------------------------------------------------------- \n");
+    printf("\n****************************Table des IDF et cst****************************:\n");
+    printf("\t |%10s |%10s |%10s |%20s |\n", "Nom", "Nature", "Type", "TypeVar");
+    printf("------------------------------------------------------------------------------ \n");
     while (temp != NULL) {
-        printf("\t |%10s |%10s |%10s |%10s |%10.2f |%10d |\n",
+        printf("\t |%10s |%10s |%10s |%20s |\n",
            temp->info.nomEntite, temp->info.nature, temp->info.type,
-           temp->info.typeVar, temp->info.val, temp->info.taille);
+           temp->info.typeVar);
         temp = temp->suivant;
     }
 }
-
 // Afficher les mots clés
 void afficherMotsCles() {
     TSM *temp = tete2;
     printf("*************************Table des mots cle************************* :\n");
     printf("Mots cle :\n");
     while (temp != NULL) {
-        
         printf(" %s\n", temp->info.Motcle);
         temp = temp->suivant;
     }
@@ -136,7 +134,7 @@ void afficherMotsCles() {
 void afficherSeparateurs() {
     TSS *temp = tete3;
     printf("*************************Table des separateurs************************* :\n");
-printf("Separateurs :");
+    printf("Separateurs :");
     while (temp != NULL) {
         printf(" %s\n", temp->info.Sep);
         temp = temp->suivant;
@@ -147,10 +145,9 @@ printf("Separateurs :");
      while (temp != NULL && strcmp(temp->info.nomEntite,idf)!=0) {
         temp = temp->suivant;}
        if(temp != NULL && strcmp(temp->info.nomEntite, idf) == 0){
-             if(strcmp(temp->info.type, "/") == 0){
              strcpy(temp->info.type,type);
              return;
-         }}
+         }
          
  }
   void insereTypeVar(char idf[],char typeVar[]){
@@ -158,12 +155,46 @@ printf("Separateurs :");
      while (temp != NULL && strcmp(temp->info.nomEntite,idf)!=0) {
         temp = temp->suivant;}
        if(temp != NULL && strcmp(temp->info.nomEntite, idf) == 0){
-             if(strcmp(temp->info.typeVar, "/") == 0){
              strcpy(temp->info.typeVar,typeVar);
              return;
-         }}
-         
- }
 
+         }}
+ 
+ //fonction qui compare s'il y a une double declaration ou pas
+ int doubleDeclaration(char idf[], char typeVar[]){
+	 TS *temp = tete1;
+	 while(temp != NULL && strcmp(temp->info.nomEntite,idf) != 0){
+		 temp = temp->suivant;
+	 }
+	 if(temp != NULL && strcmp(temp->info.nomEntite, idf) == 0){
+		 if(strcmp(temp->info.typeVar, typeVar) == 0) return 1; //double declaration
+		 else return 0;
+	 } 
+	 if(temp == NULL) return 0;
+ }
+ 
+ //fonction qui compare les types
+ int compareType(char idf[], char type[]){
+	  TS *temp = tete1;
+	  while(temp != NULL && strcmp(temp->info.nomEntite, idf) != 0){
+		 temp = temp->suivant;
+	  }
+	  
+	  if(temp != NULL){
+		  if(strcmp(temp->info.type, type) == 0) return 1; //type compatibles
+		  else return 0; //types incompatibles
+	  }
+ }
+int recupererType(char idf[]) {
+    TS *temp = tete1;
+     while (temp != NULL && strcmp(temp->info.nomEntite,idf)!=0) {
+        temp = temp->suivant;}
+    if(temp != NULL && strcmp(temp->info.nomEntite, idf) == 0){
+             if(strcmp(temp->info.type, "INTEGER") == 0)
+             return 2;
+             else if(strcmp(temp->info.type, "REAL") == 0) return 3;
+             else return 0;    
+    }else return -1;
+}
 
 
